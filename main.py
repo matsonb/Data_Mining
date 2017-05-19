@@ -8,15 +8,15 @@ total_documents = 0
 writer_list = ['austen','dickens','shakespeare','et-al']
 writers = {}
 encountered_words = set()
-train_data = {}
-train_size = 0
+dev_data = {}
+dev_data_size = 0
 
 def parse_files():
-    global total_documents, writers, train_data, encountered_words, train_size
+    global total_documents, writers, dev_data, encountered_words, dev_data_size
     for writer in writer_list:
         train_size_writer = 0
         writers[writer] = []
-        train_data[writer] = []
+        dev_data[writer] = []
         file = open(writer+'-parsed.txt')
         csv_file = csv.reader(file)
 
@@ -26,9 +26,9 @@ def parse_files():
                 row_doc = set()
                 for word in row:
                     row_doc.add(word)
-                train_data[writer].append(row_doc)
+                dev_data[writer].append(row_doc)
                 train_size_writer += 1
-                train_size += 1
+                dev_data_size += 1
             else: # add to document training data
                 total_documents += 1
                 row_doc = set()
@@ -71,31 +71,31 @@ def main():
     exit()
     writer_word_counts = get_word_counts()
     good_features = set()
-    print(train_size)
+    print(dev_data_size)
     for word in encountered_words:
         correct = 0.0
         for writer in writer_list:
-            for doc in train_data[writer]:
+            for doc in dev_data[writer]:
                 if naive_bayes(writer_word_counts,doc, {word}) == writer:
                     correct += 1
-        if correct / train_size > .5:
+        if correct / dev_data_size > .5:
             good_features.add(word)
     print(good_features)
     print(len(good_features))
     
     final_correct = 0.0
-    for writer in train_data:
-        for doc in train_data[writer]:
+    for writer in dev_data:
+        for doc in dev_data[writer]:
             if naive_bayes(writer_word_counts,doc,good_features) == writer:
                 final_correct += 1
-    print(final_correct/train_size)
+    print(final_correct / dev_data_size)
     
     all_correct = 0.0
-    for writer in train_data:
-        for doc in train_data[writer]:
+    for writer in dev_data:
+        for doc in dev_data[writer]:
             if naive_bayes(writer_word_counts,doc) == writer:
                 all_correct += 1
-    print(all_correct/train_size)
+    print(all_correct / dev_data_size)
         # take ~10 sample documents from each author
         # run classifier on those documents
         # keep track of correct ones
