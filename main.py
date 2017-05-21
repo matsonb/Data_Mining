@@ -4,12 +4,13 @@ import numpy as np
 from collections import defaultdict
 import random
 
-total_documents = 0
+total_documents = 0.0
 writer_list = ['austen','dickens','shakespeare','et-al']
 writers = {}
+writer_word_counts = {}
 encountered_words = set()
 dev_data = {}
-dev_data_size = 0
+dev_data_size = 0.0
 
 
 """
@@ -21,13 +22,13 @@ No return: edits global variables
 def parse_files():
     global total_documents, writers, dev_data, encountered_words, dev_data_size
     for writer in writer_list:
-        train_size_writer = 0
+        train_size_writer = 0.0
         writers[writer] = []
         dev_data[writer] = []
         file = open(writer+'-parsed.txt')
         csv_file = csv.reader(file)
 
-        row_index = 0
+        row_index = 0.0
         for row in csv_file:
             if row_index % 10 == 0: # add to variable training data
                 row_doc = set()
@@ -52,17 +53,16 @@ For smoothing: gets the count of all words for each writer
 Returns an author dictionary of word dictionaries
 """
 def get_word_counts():
-    writer_word_counts = {}
+    global writer_word_counts
     for writer in writer_list:
         writer_word_counts[writer] = defaultdict(lambda:0)
     for word in encountered_words:
         for writer in writer_list:
-            word_count = 0
+            word_count = 0.0
             for doc in writers[writer]:
                 if word in doc:
                     word_count += 1
             writer_word_counts[writer][word] = word_count
-    return writer_word_counts
 
 
 """
@@ -71,7 +71,7 @@ already calculated counts of words for each author.
 
 Optional param: features specifies which words to use, default is all words read
 """
-def naive_bayes(writer_word_counts,new_document,features = encountered_words):
+def naive_bayes(new_document,features = encountered_words):
 
     probs = [math.log(len(writers[writer])/total_documents) for writer in writer_list]
     
@@ -86,49 +86,41 @@ def naive_bayes(writer_word_counts,new_document,features = encountered_words):
 
 
 """
-Finds a smaller subset of features to use by finding every
-single feature that performs the best.
+Finds a smaller subset of features to use by
+finding every single feature that performs the best.
 TODO: run this a bunch of times
 """
-def naive_feature_select():
-    parse_files()
-    writer_word_counts = get_word_counts()
+def naive_feature_select(cutoff):
     good_features = set()
-    print(dev_data_size)
     for word in encountered_words:
         correct = 0.0
         for writer in writer_list:
             for doc in dev_data[writer]:
-                if naive_bayes(writer_word_counts,doc, {word}) == writer:
+                if naive_bayes(doc, {word}) == writer:
                     correct += 1
-        if correct / dev_data_size > .5:
+        if correct / dev_data_size > cutoff:
             good_features.add(word)
-    print(good_features)
-    print(len(good_features))
     
     final_correct = 0.0
     for writer in dev_data:
         for doc in dev_data[writer]:
-            if naive_bayes(writer_word_counts,doc,good_features) == writer:
+            if naive_bayes(doc,good_features) == writer:
                 final_correct += 1
+
+    print(good_features)
+    print(len(good_features))
     print(final_correct / dev_data_size)
-    
-    all_correct = 0.0
-    for writer in dev_data:
-        for doc in dev_data[writer]:
-            if naive_bayes(writer_word_counts,doc) == writer:
-                all_correct += 1
-    print(all_correct / dev_data_size)
-        # take ~10 sample documents from each author
-        # run classifier on those documents
-        # keep track of correct ones
-        # if more than .3 correct, add to good_features
 
 
+"""
+Finds a smaller subset of features to use by
+iteratively choosing next feature to add on by choosing the one that improves
+the current set the most
+
+Stops when the the addition of any remaining feature would decrease the accuracy
+"""
 def greedy_feature_select():
-    parse_files()
-    writer_word_counts = get_word_counts()
-    s = [0, set()]
+    s = [0.0, set()]
     unused_words = encountered_words
     while True:
         print("")
@@ -137,10 +129,10 @@ def greedy_feature_select():
         best_t = [0,set(), '']
         for word in unused_words:
             t = s[1].union({word})
-            t_score = 0
+            t_score = 0.0
             for writer in writer_list:
                 for doc in dev_data[writer]:
-                    if naive_bayes(writer_word_counts, doc, t) == writer:
+                    if naive_bayes(doc, t) == writer:
                         t_score += 1
             if t_score > best_t[0]:
                 best_t = [t_score, t, word]
@@ -152,22 +144,45 @@ def greedy_feature_select():
             break
     return s
 
-def test():
-    parse_files()
-    writer_word_counts = get_word_counts()
-    correct = 0
+
+def all_features():
+    correct = 0.0
+    total = 0.0
     for writer in writer_list:
         for doc in dev_data[writer]:
-            if naive_bayes(writer_word_counts, doc) == writer:
+            if naive_bayes(doc) == writer:
                 correct += 1
-    print correct
+            total += 1
+    print(correct)
+    print(correct/ dev_data_size)
 
 
+# defines random mini-batches of the training data
+def create_batches(num_batches):
+    batches = []
+    for i in range(num_batches):
+        batches.append({})
+        for writer in writer_list:
+            batches[i][writer] = []
+    for writer in writer_list:
+        author_data = list(writers[writer])
+        random.shuffle(author_data)
+        batch_size = int(math.ceil(float(len(author_data))/num_batches))
+        mini_batches = [author_data[i:i + batch_size] for i in range(0, len(author_data), batch_size)]
+        for i in range(len(mini_batches)):
+            batches[i][writer] = mini_batches[i]
+    return batches
 
 
+def test_set():
+    pass
 
 
-
-    
 if __name__ == '__main__':
-    greedy_feature_select()
+    parse_files()
+    get_word_counts()
+    print("Finished reading data")
+    # naive_feature_select(0.3)
+    # naive_feature_select(0.5)
+    data_batches = create_batches(5)
+

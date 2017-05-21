@@ -1,6 +1,7 @@
 TODO:
-- greedy hill climbing feature selection
-- decision tree feature selection
 - code to run tests of hyperparameters automatically
+    - good features cutoff accuracy
 - run the tests (might take a long time)
 - cross validation for results
+- tf-idf
+- decision tree feature selection
