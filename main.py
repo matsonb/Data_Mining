@@ -11,6 +11,13 @@ encountered_words = set()
 dev_data = {}
 dev_data_size = 0
 
+
+"""
+Gets document/feature data from txt files, stores in:
+author dictionary -> list of documents -> set of words
+
+No return: edits global variables
+"""
 def parse_files():
     global total_documents, writers, dev_data, encountered_words, dev_data_size
     for writer in writer_list:
@@ -22,7 +29,7 @@ def parse_files():
 
         row_index = 0
         for row in csv_file:
-            if row_index % 70 == 0: # add to variable training data
+            if row_index % 10 == 0: # add to variable training data
                 row_doc = set()
                 for word in row:
                     row_doc.add(word)
@@ -37,9 +44,13 @@ def parse_files():
                     encountered_words.add(word)
                 writers[writer].append(row_doc)
             row_index += 1
-        print(writer + ' ' + str(train_size_writer))
-        file.close()       
+        file.close()
 
+
+"""
+For smoothing: gets the count of all words for each writer
+Returns an author dictionary of word dictionaries
+"""
 def get_word_counts():
     writer_word_counts = {}
     for writer in writer_list:
@@ -52,7 +63,14 @@ def get_word_counts():
                     word_count += 1
             writer_word_counts[writer][word] = word_count
     return writer_word_counts
-    
+
+
+"""
+Performs naive bayes on the given document based on
+already calculated counts of words for each author.
+
+Optional param: features specifies which words to use, default is all words read
+"""
 def naive_bayes(writer_word_counts,new_document,features = encountered_words):
 
     probs = [math.log(len(writers[writer])/total_documents) for writer in writer_list]
@@ -61,14 +79,19 @@ def naive_bayes(writer_word_counts,new_document,features = encountered_words):
         if not word in features:
             continue
         for i in range(len(writer_list)):
-            probs[i] += math.log((writer_word_counts[writer_list[i]][word]+1)/(len(writers[writer_list[i]]) + len(encountered_words)))
+            probs[i] += math.log((writer_word_counts[writer_list[i]][word]+1)/(len(writers[writer_list[i]]) + len(
+                features)))
     
     return writer_list[np.argmax(probs)]
-    
-        
-def main():
+
+
+"""
+Finds a smaller subset of features to use by finding every
+single feature that performs the best.
+TODO: run this a bunch of times
+"""
+def naive_feature_select():
     parse_files()
-    exit()
     writer_word_counts = get_word_counts()
     good_features = set()
     print(dev_data_size)
@@ -100,7 +123,51 @@ def main():
         # run classifier on those documents
         # keep track of correct ones
         # if more than .3 correct, add to good_features
-        
+
+
+def greedy_feature_select():
+    parse_files()
+    writer_word_counts = get_word_counts()
+    s = [0, set()]
+    unused_words = encountered_words
+    while True:
+        print("")
+        print("")
+        print("")
+        best_t = [0,set(), '']
+        for word in unused_words:
+            t = s[1].union({word})
+            t_score = 0
+            for writer in writer_list:
+                for doc in dev_data[writer]:
+                    if naive_bayes(writer_word_counts, doc, t) == writer:
+                        t_score += 1
+            if t_score > best_t[0]:
+                best_t = [t_score, t, word]
+        if best_t[0] >= s[0]:
+            s = best_t[:2]
+            unused_words.remove(best_t[2])
+            print(s)
+        else:
+            break
+    return s
+
+def test():
+    parse_files()
+    writer_word_counts = get_word_counts()
+    correct = 0
+    for writer in writer_list:
+        for doc in dev_data[writer]:
+            if naive_bayes(writer_word_counts, doc) == writer:
+                correct += 1
+    print correct
+
+
+
+
+
+
+
     
 if __name__ == '__main__':
-    main()
+    greedy_feature_select()
