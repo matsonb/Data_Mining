@@ -1,6 +1,6 @@
 import csv
 import math
-import numpy as np
+#import numpy as np
 from collections import defaultdict
 import random
 
@@ -81,8 +81,17 @@ def naive_bayes(writer_word_counts,new_document,features = encountered_words):
         for i in range(len(writer_list)):
             probs[i] += math.log((writer_word_counts[writer_list[i]][word]+1)/(len(writers[writer_list[i]]) + len(
                 features)))
+    max_prob = max(probs)
+    if probs[1] == max_prob:
+        return writer_list[1]
+    if probs[2] == max_prob:
+        return writer_list[2]
+    if probs[3] == max_prob:
+        return writer_list[3]
+    if probs[0] == max_prob:
+        return writer_list[0]
+    return 'austen'
     
-    return writer_list[np.argmax(probs)]
 
 
 """

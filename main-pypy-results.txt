@@ -1,0 +1,91 @@
+
+
+
+[176, {'hath'}]
+
+
+
+[211, {'hath', 'example'}]
+
+
+
+[243, {'hath', 'example', 'feelings'}]
+
+
+
+[255, {'hath', 'example', 'feelings', 'manners'}]
+
+
+
+[265, {'hath', 'example', 'feelings', 'manners', 'thy'}]
+
+
+
+[272, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow'}]
+
+
+
+[279, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b'}]
+
+
+
+[284, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit'}]
+
+
+
+[288, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship'}]
+
+
+
+[292, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage'}]
+
+
+
+[297, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant'}]
+
+
+
+[300, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan'}]
+
+
+
+[303, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed'}]
+
+
+
+[305, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct'}]
+
+
+
+[307, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle'}]
+
+
+
+[308, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her'}]
+
+
+
+[309, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows'}]
+
+
+
+[310, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated'}]
+
+
+
+[310, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated', 'was'}]
+
+
+
+[310, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated', 'was', 'faded'}]
+
+
+
+[310, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated', 'was', 'faded', 'thin'}]
+
+
+
+[310, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated', 'was', 'faded', 'thin', 'excite'}]
+
+
+
