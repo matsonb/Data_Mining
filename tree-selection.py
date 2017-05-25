@@ -3,6 +3,7 @@ import math
 import numpy as np
 from collections import defaultdict
 import random
+import naive_bayes_data
 
 #total_documents = 0.0
 writer_list = ['austen','dickens','shakespeare','et-al']
@@ -12,32 +13,6 @@ writer_list = ['austen','dickens','shakespeare','et-al']
 # dev_data = {}
 # dev_data_size = 0.0
 
-
-"""
-Gets document/feature data from txt files, stores in:
-author dictionary -> list of documents -> set of words
-
-No return: edits global variables
-"""
-def parse_files():
-    total_documents = 0.0
-    writers = {}
-    for writer in writer_list:
-        train_size_writer = 0.0
-        writers[writer] = []
-        file = open(writer+'-parsed.txt')
-        csv_file = csv.reader(file)
-
-        row_index = 0.0
-        for row in csv_file:
-            total_documents += 1
-            row_doc = set()
-            for word in row:
-                row_doc.add(word)
-            writers[writer].append(row_doc)
-            row_index += 1
-        file.close()
-    return total_documents, writers
 
 """
 Randomly removes 10% of the data for purposes of testing parameters and features
@@ -155,16 +130,12 @@ def c45(sample,depth,encountered_words,split_words):
 
 
 def main():
-    total_documents,writers = parse_files()
-    encountered_words = set()
-    for writer in writers:
-        for doc in writers[writer]:
-            encountered_words.update(doc)
+    data_holder = naive_bayes_data.naive_bayes_data(['austen','dickens','shakespeare','et-al'])
     used_features = set()
     for i in range(10):
         print('starting new iteration')
-        data_90,data_10 = split_10_data(writers)
-        used_features.update(set(c45(data_10,0,encountered_words,[])))
+        data_90,data_10 = split_10_data(data_holder.writers)
+        used_features.update(set(c45(data_10,0,data_holder.encountered_words,[])))
     print(used_features)
 
 
