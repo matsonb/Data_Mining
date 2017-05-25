@@ -4,13 +4,13 @@ import numpy as np
 from collections import defaultdict
 import random
 
-total_documents = 0.0
+#total_documents = 0.0
 writer_list = ['austen','dickens','shakespeare','et-al']
-writers = {}
-writer_word_counts = {}
-encountered_words = set()
-dev_data = {}
-dev_data_size = 0.0
+# writers = {}
+# writer_word_counts = {}
+# encountered_words = set()
+# dev_data = {}
+# dev_data_size = 0.0
 
 
 """
@@ -20,49 +20,60 @@ author dictionary -> list of documents -> set of words
 No return: edits global variables
 """
 def parse_files():
-    global total_documents, writers, dev_data, encountered_words, dev_data_size
+    total_documents = 0.0
+    writers = {}
     for writer in writer_list:
         train_size_writer = 0.0
         writers[writer] = []
-        dev_data[writer] = []
         file = open(writer+'-parsed.txt')
         csv_file = csv.reader(file)
 
         row_index = 0.0
         for row in csv_file:
-            if row_index % 10 == 0: # add to variable training data
-                row_doc = set()
-                for word in row:
-                    row_doc.add(word)
-                dev_data[writer].append(row_doc)
-                train_size_writer += 1
-                dev_data_size += 1
-            else: # add to document training data
-                total_documents += 1
-                row_doc = set()
-                for word in row:
-                    row_doc.add(word)
-                    encountered_words.add(word)
-                writers[writer].append(row_doc)
+            # if row_index % 10 == 0: # add to variable training data
+            #     row_doc = set()
+            #     for word in row:
+            #         row_doc.add(word)
+            #     dev_data[writer].append(row_doc)
+            #     train_size_writer += 1
+            #     dev_data_size += 1
+            # else: # add to document training data
+            total_documents += 1
+            row_doc = set()
+            for word in row:
+                row_doc.add(word)
+            writers[writer].append(row_doc)
             row_index += 1
         file.close()
+    return total_documents, writers
+
+"""
+Randomly removes 10% of the data for purposes of testing parameters and features
+"""
+def split_10_data(full_data):
+    data_10_per = {}
+    data_90_per = {}
+    for writer in writer_list:
+        doc_list = list(full_data[writer])
+        docs_10_per = [doc_list.pop(random.randrange(len(doc_list))) for i in range(int(len(doc_list)/10.0))]
+        data_10_per[writer] = docs_10_per
+        data_90_per[writer] = doc_list
+    return data_90_per, data_10_per
 
 
 """
 For smoothing: gets the count of all words for each writer
 Returns an author dictionary of word dictionaries
 """
-def get_word_counts():
-    global writer_word_counts
+def get_word_counts(train_data):
+    train_data_counts = {}
     for writer in writer_list:
-        writer_word_counts[writer] = defaultdict(lambda:0)
-    for word in encountered_words:
-        for writer in writer_list:
-            word_count = 0.0
-            for doc in writers[writer]:
-                if word in doc:
-                    word_count += 1
-            writer_word_counts[writer][word] = word_count
+        train_data_counts[writer] = defaultdict(lambda:0.0)
+    for writer in writer_list:
+        for doc in train_data[writer]:
+            for word in doc:
+                train_data_counts[writer][word] += 1
+    return train_data_counts
 
 
 """
@@ -71,16 +82,16 @@ already calculated counts of words for each author.
 
 Optional param: features specifies which words to use, default is all words read
 """
-def naive_bayes(new_document,features = encountered_words):
+def naive_bayes(new_document, features, train_data, train_data_counts, total_documents):
 
-    probs = [math.log(len(writers[writer])/total_documents) for writer in writer_list]
+    probs = [math.log(len(train_data[writer])/total_documents) for writer in writer_list]
     
     for word in new_document:
         if not word in features:
             continue
         for i in range(len(writer_list)):
-            probs[i] += math.log((writer_word_counts[writer_list[i]][word]+1)/(len(writers[writer_list[i]]) + len(
-                features)))
+            smoothed_prob = (train_data_counts[writer_list[i]][word]+1)/(len(train_data[writer_list[i]])+len(features))
+            probs[i] += math.log(smoothed_prob)
     
     return writer_list[np.argmax(probs)]
 
@@ -90,13 +101,14 @@ Finds a smaller subset of features to use by
 finding every single feature that performs the best.
 TODO: run this a bunch of times
 """
-def naive_feature_select(cutoff):
+def naive_feature_select(cutoff, possible_features, train_data, train_data_counts, dev_data, total_documents):
+    dev_data_size = sum([len(values) for values in dev_data.itervalues])
     good_features = set()
-    for word in encountered_words:
+    for word in possible_features:
         correct = 0.0
         for writer in writer_list:
             for doc in dev_data[writer]:
-                if naive_bayes(doc, {word}) == writer:
+                if naive_bayes(doc, {word}, train_data, train_data_counts, total_documents) == writer:
                     correct += 1
         if correct / dev_data_size > cutoff:
             good_features.add(word)
@@ -104,7 +116,7 @@ def naive_feature_select(cutoff):
     final_correct = 0.0
     for writer in dev_data:
         for doc in dev_data[writer]:
-            if naive_bayes(doc,good_features) == writer:
+            if naive_bayes(doc, good_features, train_data, train_data_counts, total_documents) == writer:
                 final_correct += 1
 
     print(good_features)
@@ -119,9 +131,9 @@ the current set the most
 
 Stops when the the addition of any remaining feature would decrease the accuracy
 """
-def greedy_feature_select():
+def greedy_feature_select(possible_features, train_data, train_data_counts, dev_data, total_documents):
     s = [0.0, set()]
-    unused_words = encountered_words
+    unused_words = possible_features
     while True:
         print("")
         print("")
@@ -132,7 +144,7 @@ def greedy_feature_select():
             t_score = 0.0
             for writer in writer_list:
                 for doc in dev_data[writer]:
-                    if naive_bayes(doc, t) == writer:
+                    if naive_bayes(doc, t, train_data, train_data_counts, total_documents) == writer:
                         t_score += 1
             if t_score > best_t[0]:
                 best_t = [t_score, t, word]
@@ -145,20 +157,19 @@ def greedy_feature_select():
     return s
 
 
-def all_features():
+def all_features(features, train_data, train_data_counts, dev_data, total_documents):
     correct = 0.0
     total = 0.0
     for writer in writer_list:
         for doc in dev_data[writer]:
-            if naive_bayes(doc) == writer:
+            if naive_bayes(doc, features, train_data, train_data_counts, total_documents) == writer:
                 correct += 1
             total += 1
-    print(correct)
-    print(correct/ dev_data_size)
+    return correct
 
 
 # defines random mini-batches of the training data
-def create_batches(num_batches):
+def create_batches(num_batches, writers):
     batches = []
     for i in range(num_batches):
         batches.append({})
@@ -174,15 +185,46 @@ def create_batches(num_batches):
     return batches
 
 
-def test_set():
-    pass
+def cross_validation(num_batches, features, writers, total_documents):
+    batches = create_batches(num_batches, writers)
+    correct = 0.0
+    total = 0.0
+    for test in range(num_batches):
+        train_data = {}
+        for writer in writer_list:
+            train_data[writer] = []
+        test_data = batches[test]
+        for index in range(len(batches)):
+            if index != test:
+                for writer in batches[index]:
+                    train_data[writer] += batches[index][writer]
+        train_data_counts = get_word_counts(train_data)
 
+        for writer in test_data:
+            for doc in test_data[writer]:
+                label = naive_bayes(doc, features, train_data, train_data_counts, total_documents)
+                total += 1
+                if label == writer:
+                    correct += 1
+    return correct/total
+
+def main():
+    total_documents, writers = parse_files()
+    writers, dev_data = split_10_data(writers)
+    writers_word_counts = get_word_counts(writers)
+    encountered_words = [key for writer in writer_list for key in writers_word_counts[writer]]
+    print("Finished reading data")
+    feature_words = ['hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship',
+                     'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated',
+                     'was', 'faded', 'thin', 'excite']
+    print cross_validation(5, feature_words, writers, total_documents)
 
 if __name__ == '__main__':
-    parse_files()
-    get_word_counts()
-    print("Finished reading data")
-    # naive_feature_select(0.3)
-    # naive_feature_select(0.5)
-    data_batches = create_batches(5)
+    main()
+
+
+    # feature_words = ['hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship',
+    #                  'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated',
+    #                  'was', 'faded', 'thin', 'excite']
+    # print cross_validation(5, feature_words)
 
