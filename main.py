@@ -1,57 +1,15 @@
-import csv
 import math
-import numpy as np
-from collections import defaultdict
 import random
 import naive_bayes_data
 
-#total_documents = 0.0
-writer_list = ['austen','dickens','shakespeare','et-al']
-# writers = {}
-# writer_word_counts = {}
-# encountered_words = set()
-# dev_data = {}
-# dev_data_size = 0.0
+
+writer_list = ['austen', 'dickens', 'shakespeare', 'et-al']
 
 
-"""
-Gets document/feature data from txt files, stores in:
-author dictionary -> list of documents -> set of words
-
-No return: edits global variables
-"""
-# def parse_files():
-#     total_documents = 0.0
-#     writers = {}
-#     for writer in writer_list:
-#         train_size_writer = 0.0
-#         writers[writer] = []
-#         file = open(writer+'-parsed.txt')
-#         csv_file = csv.reader(file)
-#
-#         row_index = 0.0
-#         for row in csv_file:
-#             # if row_index % 10 == 0: # add to variable training data
-#             #     row_doc = set()
-#             #     for word in row:
-#             #         row_doc.add(word)
-#             #     dev_data[writer].append(row_doc)
-#             #     train_size_writer += 1
-#             #     dev_data_size += 1
-#             # else: # add to document training data
-#             total_documents += 1
-#             row_doc = set()
-#             for word in row:
-#                 row_doc.add(word)
-#             writers[writer].append(row_doc)
-#             row_index += 1
-#         file.close()
-#     return total_documents, writers
-
-"""
-Randomly removes 10% of the data for purposes of testing parameters and features
-"""
 def split_10_data(full_data):
+    """
+    Randomly removes 10% of the data for purposes of testing parameters and features
+    """
     data_10_per = {}
     data_90_per = {}
     for writer in writer_list:
@@ -60,49 +18,14 @@ def split_10_data(full_data):
         data_10_per[writer] = docs_10_per
         data_90_per[writer] = doc_list
     return data_90_per, data_10_per
-#
-#
-# """
-# For smoothing: gets the count of all words for each writer
-# Returns an author dictionary of word dictionaries
-# """
-# def get_word_counts(train_data):
-#     train_data_counts = {}
-#     for writer in writer_list:
-#         train_data_counts[writer] = defaultdict(lambda:0.0)
-#     for writer in writer_list:
-#         for doc in train_data[writer]:
-#             for word in doc:
-#                 train_data_counts[writer][word] += 1
-#     return train_data_counts
-#
-#
-# """
-# Performs naive bayes on the given document based on
-# already calculated counts of words for each author.
-#
-# Optional param: features specifies which words to use, default is all words read
-# """
-# def naive_bayes(new_document, features, train_data, train_data_counts, total_documents):
-#
-#     probs = [math.log(len(train_data[writer])/total_documents) for writer in writer_list]
-#
-#     for word in new_document:
-#         if not word in features:
-#             continue
-#         for i in range(len(writer_list)):
-#             smoothed_prob = (train_data_counts[writer_list[i]][word]+1)/(len(train_data[writer_list[i]])+len(features))
-#             probs[i] += math.log(smoothed_prob)
-#
-#     return writer_list[np.argmax(probs)]
 
 
-"""
-Finds a smaller subset of features to use by
-finding every single feature that performs the best.
-TODO: run this a bunch of times
-"""
 def naive_feature_select(cutoff, data_holder, dev_data):
+    """
+    Finds a smaller subset of features to use by
+    finding every single feature that performs the best.
+    TODO: run this a bunch of times
+    """
     dev_data_size = sum([len(values) for values in dev_data.itervalues])
     good_features = set()
     for word in data_holder.encountered_words:
@@ -125,14 +48,14 @@ def naive_feature_select(cutoff, data_holder, dev_data):
     print(final_correct / dev_data_size)
 
 
-"""
-Finds a smaller subset of features to use by
-iteratively choosing next feature to add on by choosing the one that improves
-the current set the most
-
-Stops when the the addition of any remaining feature would decrease the accuracy
-"""
 def greedy_feature_select(data_holder, dev_data):
+    """
+    Finds a smaller subset of features to use by
+    iteratively choosing next feature to add on by choosing the one that improves
+    the current set the most
+
+    Stops when the the addition of any remaining feature would decrease the accuracy
+    """
     s = [0.0, set()]
     unused_words = data_holder.encountered_words
     while True:
@@ -169,8 +92,8 @@ def all_features(data_holder, dev_data):
     return correct
 
 
-# defines random mini-batches of the training data
 def create_batches(num_batches, writers):
+    """ defines random mini-batches of the training data """
     batches = []
     for i in range(num_batches):
         batches.append({})
@@ -187,6 +110,7 @@ def create_batches(num_batches, writers):
 
 
 def cross_validation(num_batches, features, data_holder):
+    """ runs cross validation naive bayes on the data with the given features and number of batches """
     batches = create_batches(num_batches, data_holder.writers)
     correct = 0.0
     total = 0.0
@@ -209,8 +133,9 @@ def cross_validation(num_batches, features, data_holder):
                     correct += 1
     return correct/total
 
+
 def main():
-    data_holder = naive_bayes_data.naive_bayes_data(['austen','dickens','shakespeare','et-al'])
+    data_holder = naive_bayes_data.naive_bayes_data(writer_list)
     writers, dev_data = split_10_data(data_holder.writers)
     data_holder.set_writers(writers)
     print("Finished reading data")
