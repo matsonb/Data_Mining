@@ -4,13 +4,13 @@ import numpy as np
 from collections import defaultdict
 import random
 
-total_documents = 0.0
+#total_documents = 0.0
 writer_list = ['austen','dickens','shakespeare','et-al']
-writers = {}
-writer_word_counts = {}
-encountered_words = set()
-dev_data = {}
-dev_data_size = 0.0
+# writers = {}
+# writer_word_counts = {}
+# encountered_words = set()
+# dev_data = {}
+# dev_data_size = 0.0
 
 
 """
@@ -20,32 +20,37 @@ author dictionary -> list of documents -> set of words
 No return: edits global variables
 """
 def parse_files():
-    global total_documents, writers, dev_data, encountered_words, dev_data_size
+    total_documents = 0.0
+    writers = {}
     for writer in writer_list:
         train_size_writer = 0.0
         writers[writer] = []
-        dev_data[writer] = []
         file = open(writer+'-parsed.txt')
         csv_file = csv.reader(file)
 
         row_index = 0.0
         for row in csv_file:
-            if row_index % 10 == 0: # add to variable training data
-                row_doc = set()
-                for word in row:
-                    row_doc.add(word)
-                dev_data[writer].append(row_doc)
-                train_size_writer += 1
-                dev_data_size += 1
-            else: # add to document training data
-                total_documents += 1
-                row_doc = set()
-                for word in row:
-                    row_doc.add(word)
-                    encountered_words.add(word)
-                writers[writer].append(row_doc)
+            total_documents += 1
+            row_doc = set()
+            for word in row:
+                row_doc.add(word)
+            writers[writer].append(row_doc)
             row_index += 1
         file.close()
+    return total_documents, writers
+
+"""
+Randomly removes 10% of the data for purposes of testing parameters and features
+"""
+def split_10_data(full_data):
+    data_10_per = {}
+    data_90_per = {}
+    for writer in writer_list:
+        doc_list = list(full_data[writer])
+        docs_10_per = [doc_list.pop(random.randrange(len(doc_list))) for i in range(int(len(doc_list)/10.0))]
+        data_10_per[writer] = docs_10_per
+        data_90_per[writer] = doc_list
+    return data_90_per, data_10_per
 
 
 def expected_information(sample_sizes):
@@ -110,7 +115,7 @@ def gain_ratio(word,sample):
     return info_gain/split_info
 
 
-def c45(sample,depth,split_words):
+def c45(sample,depth,encountered_words,split_words):
     best_ratio = (0.0,'')
     for word in encountered_words:
         if word in split_words:
@@ -140,9 +145,9 @@ def c45(sample,depth,split_words):
         right_words = []
         new_split_words = split_words + [attr]
         if has_attr_length > 0:
-            left_words = c45(has_attr,depth + 1,new_split_words)
+            left_words = c45(has_attr,depth + 1,encountered_words,new_split_words)
         if no_has_attr_length > 0:
-            right_words = c45(no_has_attr,depth + 1,new_split_words)
+            right_words = c45(no_has_attr,depth + 1,encountered_words,new_split_words)
         return [attr] + left_words + right_words
     else:
         return [attr]
@@ -150,8 +155,17 @@ def c45(sample,depth,split_words):
 
 
 def main():
-    parse_files()
-    print(c45(dev_data,0,[]))
+    total_documents,writers = parse_files()
+    encountered_words = set()
+    for writer in writers:
+        for doc in writers[writer]:
+            encountered_words.update(doc)
+    used_features = set()
+    for i in range(10):
+        print('starting new iteration')
+        data_90,data_10 = split_10_data(writers)
+        used_features.update(set(c45(data_10,0,encountered_words,[])))
+    print(used_features)
 
 
 if __name__ == '__main__':
