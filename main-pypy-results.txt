@@ -89,3 +89,7 @@
 
 
 
+[310, {'hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship', 'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated', 'was', 'faded', 'thin', 'excite', 'indulged'}]
+
+
+
