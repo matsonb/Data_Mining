@@ -58,7 +58,7 @@ def greedy_feature_select(data_holder, dev_data):
     """
     s = [0.0, set()]
     unused_words = data_holder.encountered_words
-    while True:
+    while len(s[1]) < 20:
         print("")
         print("")
         print("")
@@ -111,7 +111,9 @@ def create_batches(num_batches, writers):
 
 def cross_validation(num_batches, features, data_holder):
     """ runs cross validation naive bayes on the data with the given features and number of batches """
+    features = set(features)
     batches = create_batches(num_batches, data_holder.writers)
+    print("Finished creating batches")
     correct = 0.0
     total = 0.0
     for test in range(num_batches):
@@ -131,6 +133,7 @@ def cross_validation(num_batches, features, data_holder):
                 total += 1
                 if label == writer:
                     correct += 1
+        print("Finished test " + str(test+1))
     return correct/total
 
 
@@ -140,17 +143,12 @@ def main():
     data_holder.set_writers(writers)
     print("Finished reading data")
     print all_features(data_holder, dev_data)
-    # feature_words = ['hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship',
-    #                  'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated',
-    #                  'was', 'faded', 'thin', 'excite']
+    feature_words = ['hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship',
+                     'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated',
+                     'was', 'faded', 'thin', 'excite']
+    print cross_validation(5, feature_words, data_holder)
     print cross_validation(5, data_holder.encountered_words, data_holder)
 
 if __name__ == '__main__':
     main()
-
-
-    # feature_words = ['hath', 'example', 'feelings', 'manners', 'thy', 'allow', 'b', 'dorrit', 'friendship',
-    #                  'carriage', 'cant', 'plan', 'handed', 'conduct', 'candle', 'her', 'crows', 'repeated',
-    #                  'was', 'faded', 'thin', 'excite']
-    # print cross_validation(5, feature_words)
 
