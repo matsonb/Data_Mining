@@ -1,0 +1,48 @@
+Naive Selection
+
+
+
+
+
+
+Greedy Selection
+
+
+
+
+
+
+
+Decision Tree Selection
+
+Finished reading data
+-------------------------------------------------------------
+
+Selected features
+set(['product', 'his', 'ere', 'thou', 'section', 'breed', 'had', 'supplied', 'chamberlain', 'hath', 'dorrit', 'b', 'exit', 'allay', 'fry', 'data', 'thee', 'wind'])
+
+
+Selected features result
+0.728862973761
+
+
+Finished reading data
+-------------------------------------------------------------
+
+Selected features
+set(['exeunt', 'his', 'linear', 'barton', 'circumstanced', 'retrieved', 'thee', 'years', 'hath', 'rewards', 'mouth', 'camelshair', 'thricefamed', 'he', 'b', 'thou', 'section', 'scold', 'mapreduce', 'n', 'fig', 'night', 'y', 'x', 'k'])
+
+
+Selected features result
+0.761256883706
+
+
+Finished reading data
+-------------------------------------------------------------
+
+Selected features
+set(['his', 'door', 'thee', 'wars', 'hath', 'ont', 'simpler', 'b', 'service', 'thy', 'thou', 'unmannerly', 'section', 'mijvj', 'n', 'carrion', 'wooden', 'k', 'feeling', 'forsooth'])
+
+
+Selected features result
+0.741820537739
