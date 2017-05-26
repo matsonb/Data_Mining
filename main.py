@@ -38,17 +38,20 @@ def naive_feature_select(cutoff, data_holder, dev_data):
                     correct += 1
         if correct / dev_data_size > cutoff:
             good_features.add(word)
-    
+    return good_features
+
+    """
     final_correct = 0.0
     for writer in dev_data:
         for doc in dev_data[writer]:
             if data_holder.naive_bayes(doc, good_features) == writer:
                 final_correct += 1
 
+
     print(good_features)
     print(len(good_features))
     print(final_correct / dev_data_size)
-
+	"""
 
 def greedy_feature_select(data_holder, dev_data):
     """
@@ -72,7 +75,7 @@ def greedy_feature_select(data_holder, dev_data):
                 for doc in dev_data[writer]:
                     if data_holder.naive_bayes(doc, t) == writer:
                         t_score += 1
-            if t_score > best_t[0]:
+            if t_score >= best_t[0]:
                 best_t = [t_score, t, word]
         if best_t[0] >= s[0]:
             s = best_t[:2]
@@ -251,8 +254,12 @@ def main():
 	    	for j in range(10):
 	    		 writers, dev_data = split_10_data(data_holder.writers)
 	    		 features.update(set(c45(dev_data,0,data_holder.encountered_words,[])))
-	    print 'All features result'
-	    print all_features(data_holder, dev_data)
+	   	print '-------------------------------------------------------------'
+	    print ''
+	    print 'Selected features'
+	    print features
+	    print ''
+	    print ''
 	    print 'Selected features result'
 	    print cross_validation(5, features, data_holder)
 	    print ''
