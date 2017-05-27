@@ -70,7 +70,7 @@ class naive_bayes_data():
         max_prob = max(probs)
         for i in range(len(probs)):
             if probs[i] == max_prob:
-                return probs[i]
+                return self.writer_list[i]
 
         return self.writer_list[np.argmax(probs)]
 
