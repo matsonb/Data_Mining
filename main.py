@@ -63,7 +63,7 @@ def greedy_feature_select(data_holder, dev_data):
     """
     s = [0.0, set()]
     unused_words = data_holder.encountered_words
-    while True:
+    while len(s[1]) < 20:
         print("")
         print("")
         print("")
@@ -79,7 +79,6 @@ def greedy_feature_select(data_holder, dev_data):
                 best_t = [t_score, t, word]
         if best_t[0] >= s[0]:
             s = best_t[:2]
-            print best_t[2]
             unused_words.remove(best_t[2])
             print(s)
         else:

@@ -7,7 +7,30 @@ Naive Selection
 
 Greedy Selection
 
+Selected features
+set(['em', 'exeunt', 'edmundby', 'reparation', 'charles', 'bella', 'dark', 'glass', 'every', 'b', 'raining', 'thou', 'youll', 'iteration', 'wednesday', 'until', 'p', 'situation', 'meeting', 'retorted'])
 
+
+Selected features result
+0.894244604317
+
+------------------------------------------------------------
+
+Selected features
+set(['edmundby', 'raining', 'bourgh', 'dont', 'revolt', 'however', 'feelings', 'delight', 'hath', 'marryingand', 'chair', 'thou', 'barton', 'fingers', 'until', 'p', 'either', 'example', 'round', 'creature'])
+
+
+Selected features result
+0.902877697842
+
+------------------------------------------------------------
+
+Selected features
+set(['edmundby', 'raining', 'dont', 'exert', 'mistaken', 'aware', 'hath', 'b', 'joe', 'marryingand', 'finessed', 'sister', 'isabella', 'thou', 'endeavoured', 'situation', 'didnt', 'example', 'affection', 'hat'])
+
+
+Selected features result
+0.901438848921
 
 
 
@@ -15,8 +38,6 @@ Greedy Selection
 
 Decision Tree Selection
 
-Finished reading data
--------------------------------------------------------------
 
 Selected features
 set(['product', 'his', 'ere', 'thou', 'section', 'breed', 'had', 'supplied', 'chamberlain', 'hath', 'dorrit', 'b', 'exit', 'allay', 'fry', 'data', 'thee', 'wind'])
@@ -26,7 +47,6 @@ Selected features result
 0.728862973761
 
 
-Finished reading data
 -------------------------------------------------------------
 
 Selected features
@@ -37,7 +57,6 @@ Selected features result
 0.761256883706
 
 
-Finished reading data
 -------------------------------------------------------------
 
 Selected features
