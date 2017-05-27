@@ -58,8 +58,8 @@ class naive_bayes_data():
         """
         probs = [math.log(len(self.writers[writer]) / self.total_documents) for writer in self.writer_list]
 
-        for word in new_document:
-            if not word in features:
+        for word in features:
+            if not word in new_document:
                 continue
             for i in range(len(self.writer_list)):
                 smoothed_prob = (self.writer_word_counts[self.writer_list[i]][word] + 1) / (

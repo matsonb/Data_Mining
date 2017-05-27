@@ -75,7 +75,7 @@ def greedy_feature_select(data_holder, dev_data):
                 for doc in dev_data[writer]:
                     if data_holder.naive_bayes(doc, t) == writer:
                         t_score += 1
-            if t_score >= best_t[0]:
+            if t_score > best_t[0]:
                 best_t = [t_score, t, word]
         if best_t[0] >= s[0]:
             s = best_t[:2]
