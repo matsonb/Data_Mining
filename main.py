@@ -239,6 +239,13 @@ def c45(sample,depth,encountered_words,split_words):
 
 
 def main():
+	if sys.argv[1] == 'baseline':
+		data_holder = naive_bayes_data.naive_bayes_data(writer_list)
+		print 'Finished reading data'
+		print cross_validation(5,data_holder.encountered_words, data_holder)
+		return
+
+
 	for i in range(3):
 	    data_holder = naive_bayes_data.naive_bayes_data(writer_list)
 	    writers, dev_data = split_10_data(data_holder.writers)
