@@ -66,6 +66,12 @@ class naive_bayes_data():
                 len(self.writers[self.writer_list[i]]) + len(features))
                 probs[i] += math.log(smoothed_prob)
 
+        # I think this should be faster than argmax but if it fails we can go to argmax
+        max_prob = max(probs)
+        for i in range(len(probs)):
+            if probs[i] == max_prob:
+                return probs[i]
+
         return self.writer_list[np.argmax(probs)]
 
     def set_writers(self, writers):
