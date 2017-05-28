@@ -5,6 +5,7 @@ Baseline
 
 Naive Selection
 
+.32
 Length of features: 57125
 Selected features result
 0.977338129496
@@ -12,6 +13,7 @@ Selected features result
 
 ------------------------------------------------------------
 
+.4
 Length of features: 74
 Selected features result
 0.613669064748
@@ -19,12 +21,30 @@ Selected features result
 
 ------------------------------------------------------------
 
+.5
 Length of features: 9
 Selected features result
 0.544604316547
 
 
+=======
+3.2
+Selected features: more than I am willing to copy
+0.976978417266 - I think this is for all words
 
+4
+Selected features
+set(['talked', 'love', 'fair', 'give', 'gods', 'others', 'thus', 'scene', 'feelings', 'go', 'our', 'ay', 'art', 'soon', 'yet', 'unto', 'speak', 'whose', 'p', 'mine', 'section', 'tis', 'till', 'exit', 'dost', 'th', 'sweet', 'jane', 'lord', 'nay', 'bid', 'noble', 'queen', 'shall', 'thee', 'men', 'c', 'number', 'cannot', 'let', 'blood', 'party', 'hast', 'exeunt', 'doth', 'true', 'grace', 'nor', 'every', 'king', 'sister', 'b', 'd', 'thy', 'hath', 'thou', 'ill', 'o', 'n', 'ere', 'thine', 'enter', 'y', 'x', 'happiness', 'z', 'example', 'comes'])
+Selected features result
+0.603597122302
+
+5
+Selected features
+set(['exeunt', 'thy', 'thou', 'thee', 'scene', 'o', 'tis', 'hath', 'exit', 'enter'])
+Selected features result
+0.529856115108
+
+________________
 
 Greedy Selection
 
