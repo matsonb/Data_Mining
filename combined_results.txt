@@ -34,6 +34,14 @@ set(['comfort', 'love', 'fair', 'noble', 'almost', 'gods', 'thus', 'scene', 'fee
 Selected features result
 0.613669064748
 
+
+
+.45
+Selected features
+set(['hath', 'exeunt', 'art', 'thy', 'ill', 'thou', 'sweet', 'thee', 'scene', 'o', 'tis', 'hast', 'exit', 'enter', 'ay', 'lord', 'doth', 'example'])
+Selected features result
+0.506834532374
+
 .5
 Selected features
 set(['exeunt', 'thy', 'thou', 'thee', 'o', 'tis', 'hath', 'exit', 'enter'])
