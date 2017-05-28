@@ -5,7 +5,7 @@ import sys
 
 writer_list = ['austen', 'dickens', 'shakespeare', 'et-al']
 # cutoffs = [.32, .4, .5]
-cutoffs = [.4, .5]
+cutoffs = [.34, .36,.38]
 
 
 def split_10_data(full_data):
@@ -257,6 +257,8 @@ def main():
             features = naive_feature_select(cutoffs[i], data_holder, dev_data)
         elif sys.argv[1] == 'greedy':
             features = greedy_feature_select(data_holder, dev_data)
+        elif sys.argv[1] == 'random':
+        	features = random.sample(data_holder.encountered_words,20)
         else:
             data_holder = naive_bayes_data.naive_bayes_data(writer_list)  # we want to reset this to begin
             for j in range(10):
