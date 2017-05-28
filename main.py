@@ -4,7 +4,7 @@ import naive_bayes_data
 import sys
 
 writer_list = ['austen', 'dickens', 'shakespeare', 'et-al']
-#cutoffs = [.32, .4, .5]
+# cutoffs = [.32, .4, .5]
 cutoffs = [.4, .5]
 
 
@@ -74,7 +74,7 @@ def greedy_feature_select(data_holder, dev_data):
                 for doc in dev_data[writer]:
                     if data_holder.naive_bayes(doc, t) == writer:
                         t_score += 1
-            if t_score >= best_t[0]:
+            if t_score > best_t[0]:
                 best_t = [t_score, t, word]
         if best_t[0] >= s[0]:
             s = best_t[:2]
@@ -82,7 +82,7 @@ def greedy_feature_select(data_holder, dev_data):
             print(s)
         else:
             break
-    return s
+    return s[1]
 
 
 def all_features(data_holder, dev_data):
@@ -241,8 +241,13 @@ def c45(sample, depth, encountered_words, split_words):
 
 
 def main():
-    #for i in range(3):
-    for i in range(2):
+    if sys.argv[1] == 'baseline':
+        data_holder = naive_bayes_data.naive_bayes_data(writer_list)
+        print 'Finished reading data'
+        print cross_validation(5, data_holder.encountered_words, data_holder)
+        return
+
+    for i in range(3):
         data_holder = naive_bayes_data.naive_bayes_data(writer_list)
         writers, dev_data = split_10_data(data_holder.writers)
         data_holder.set_writers(writers)
