@@ -48,6 +48,23 @@ ________________
 
 Greedy Selection
 
+Selected features - 50
+set(['edmundby', 'raining', 'dont', 'mayst', 'scold', 'afraidbut', 'nighthowever', 'foul', 'feelings', 'bright', 'woods', 'marryingand', 'impossible', 'fine', 'dependencesurely', 'aggression', 'finessed', 'certainly', 'granting', 'mountainsand', 'snowing', 'ease', 'shameand', 'excepting', 'unanswered', 'originality', 'unsuitableness', 'th', 'lettersexpress', 'hanging', 'briskness', 'meadows', 'shaving', 'expence', 'enquiring', 'mr', 'gloomy', 'assentdo', 'fretful', 'chatter', 'firs', 'eligibly', 'emma', 'wooden', 'eligible', 'n', 'admire', 'progressively', 'enter', 'example'])
+
+
+Selected features result
+0.903597122302
+
+_______________________
+
+Selected features - 20
+set(['edmundby', 'raining', 'dont', 'mayst', 'mr', 'feelings', 'bright', 'gloomy', 'impossible', 'fine', 'certainly', 'emma', 'wooden', 'ease', 'excepting', 'n', 'admire', 'th', 'enter', 'example'])
+
+Selected features result
+0.910916747651
+0.907029478458
+____________________________________________________________
+
 Selected features
 set(['em', 'exeunt', 'edmundby', 'reparation', 'charles', 'bella', 'dark', 'glass', 'every', 'b', 'raining', 'thou', 'youll', 'iteration', 'wednesday', 'until', 'p', 'situation', 'meeting', 'retorted'])
 
