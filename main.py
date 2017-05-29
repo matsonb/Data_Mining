@@ -4,8 +4,7 @@ import naive_bayes_data
 import sys
 
 writer_list = ['austen', 'dickens', 'shakespeare', 'et-al']
-# cutoffs = [.32, .4, .5]
-cutoffs = [.4, .5]
+cutoffs = [.32, .4, .5]
 
 
 def split_10_data(full_data):
@@ -62,7 +61,7 @@ def greedy_feature_select(data_holder, dev_data):
     """
     s = [0.0, set()]
     unused_words = data_holder.encountered_words
-    while len(s[1]) < 20:
+    while len(s[1]) < 50:
         print("")
         print("")
         print("")
@@ -272,6 +271,7 @@ def main():
         print cross_validation(5, features, data_holder)
         print ''
         print ''
+
 
 
 if __name__ == '__main__':
