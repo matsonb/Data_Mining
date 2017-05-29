@@ -96,7 +96,7 @@ set(['edmundby', 'raining', 'dont', 'mayst', 'scold', 'afraidbut', 'nighthowever
 
 Selected features result
 0.903597122302
-
+0.916099773243
 _______________________
 
 Selected features - 20
