@@ -5,7 +5,7 @@ import sys
 
 writer_list = ['austen', 'dickens', 'shakespeare', 'et-al']
 # cutoffs = [.32, .4, .5]
-cutoffs = [.34, .36,.38]
+cutoffs = [.43, .435,.44]
 
 
 def split_10_data(full_data):
