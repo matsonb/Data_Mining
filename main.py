@@ -62,7 +62,7 @@ def greedy_feature_select(data_holder, dev_data):
     """
     s = [0.0, set()]
     unused_words = data_holder.encountered_words
-    while len(s[1]) < 20:
+    while len(s[1]) < 50:
         print("")
         print("")
         print("")
@@ -274,6 +274,7 @@ def main():
         print cross_validation(5, features, data_holder)
         print ''
         print ''
+
 
 
 if __name__ == '__main__':
