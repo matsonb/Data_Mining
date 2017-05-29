@@ -28,11 +28,36 @@ set(['edmundby', 'sayingsome', 'gradiwally', 'mustachio', 'parallelogram', 'gag'
 Selected features result
 0.977338129496
 
+.34
+Selected features length: 1318
+Selected features result
+0.732374100719
+
+.36
+Selected features length: 394
+Selected features result
+0.681294964029
+
+
+.38
+Selected features length: 147
+Selected features result
+0.674820143885
+
+
 .4
 Selected features
 set(['comfort', 'love', 'fair', 'noble', 'almost', 'gods', 'thus', 'scene', 'feelings', 'patience', 'our', 'ay', 'hell', 'fear', 'miss', 'yet', 'dost', 'speak', 'enter', 'art', 'death', 'mine', 'herself', 'section', 'give', 'tis', 'till', 'live', 'thine', 'exit', 'therefore', 'th', 'b', 'lord', 'nay', 'sweet', 'hath', 'exeunt', 'y', 'god', 'shall', 'thee', 'men', 'c', 'number', 'hast', 'cannot', 'every', 'virtue', 'sisters', 'doth', 'true', 'grace', 'nor', 'shalt', 'faith', 'sister', 'heaven', 'thy', 'ill', 'thou', 'die', 'marry', 'o', 'n', 'ere', 'king', 'act', 'hence', 'x', 'makes', 'example', 'comes', 'blood'])
 Selected features result
 0.613669064748
+
+
+
+.45
+Selected features
+set(['hath', 'exeunt', 'art', 'thy', 'ill', 'thou', 'sweet', 'thee', 'scene', 'o', 'tis', 'hast', 'exit', 'enter', 'ay', 'lord', 'doth', 'example'])
+Selected features result
+0.506834532374
 
 .5
 Selected features
@@ -123,3 +148,24 @@ set(['his', 'door', 'thee', 'wars', 'hath', 'ont', 'simpler', 'b', 'service', 't
 
 Selected features result
 0.741820537739
+
+
+
+
+Random Feature Selection -- 20 features
+
+Selected features
+['blending', 'postponement', 'whatisit', 'donne', 'bfs', 'dearer', 'sweetnesslatterly', 'hoise', 'contemptible', 'griefshot', 'brassy', 'mn', 'bodykins', 'remotion', 'decrease', 'attention', 'ascendingshe', 'adversary', 'astonishing', 'guardianship']
+Selected features result
+0.370863309353
+
+
+Selected features
+['goodbut', 'due', 'spightfully', 'broad', 'felt', 'jewels', 'jnirepbbt', 'longleggd', 'vaward', 'whom', 'pittieward', 'hannah', 'humbug', 'rz', 'priory', 'prose', 'smart', 'inheritor', 'niggard', 'bench']
+Selected features result
+0.378776978417
+
+Selected features
+['misordred', 'businessthat', 'lowered', 'ridge', 'fundamental', 'programmer', 'communicative', 'offend', 'outsiders', 'twists', 'watchful', 'repinebut', 'feet', 'entertainments', 'buttons', 'property', 'feature', 'progress', 'fights', 'unfolded']
+Selected features result
+0.355395683453
