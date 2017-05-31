@@ -1,15 +1,27 @@
+'''
+A class to store the document data
+'''
+
+
+
 import csv
 from collections import defaultdict
 import math
-import numpy as np
 
 class naive_bayes_data():
+    # The writers
     writer_list = []
+    # dicctionary, writer : list of documents
     writers = {}
+    # 2d dictionary, writer : word : number of documents by writer containing word
     writer_word_counts = {}
+    # Total number of documents (so we don't need to loop through writer_list to access this)
     total_documents = 0.0
+    # Holds all encountered words
     encountered_words = set()
 
+
+    # constructor
     def __init__(self, writer_list):
         self.writer_list = writer_list
         self.parse_files()
@@ -66,14 +78,13 @@ class naive_bayes_data():
                 len(self.writers[self.writer_list[i]]) + len(features))
                 probs[i] += math.log(smoothed_prob)
 
-        # I think this should be faster than argmax but if it fails we can go to argmax
+        # This gets argmax(probs) but empirically this way seems faster
         max_prob = max(probs)
         for i in range(len(probs)):
             if probs[i] == max_prob:
                 return self.writer_list[i]
 
-        return self.writer_list[np.argmax(probs)]
-
+    # Specify a subset of the documents to be the training set
     def set_writers(self, writers):
         self.writers = writers
         self.get_word_counts()
